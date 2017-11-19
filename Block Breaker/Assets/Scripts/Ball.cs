@@ -2,7 +2,7 @@
 
 public class Ball : MonoBehaviour
 {
-    public Paddle paddle;
+    private Paddle paddle;
 
     private Vector3 paddleToBallVector;
 
@@ -11,6 +11,7 @@ public class Ball : MonoBehaviour
 
     private void Awake()
     {
+        paddle = GameObject.FindObjectOfType<Paddle>();
         regi = GetComponent<Rigidbody2D>();
     }
 
@@ -34,6 +35,19 @@ public class Ball : MonoBehaviour
                 regi.velocity = new Vector2(2f, 10f);
 
             }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Vector2 tweak = new Vector2(Random.Range(0, 0.2f), Random.Range(0, 0.2f));
+
+        print("tweak " + tweak);
+        print("regi " + regi.velocity);
+        if (hasStarted)
+        {
+            GetComponent<AudioSource>().Play();
+            regi.velocity += tweak;
         }
     }
 }
